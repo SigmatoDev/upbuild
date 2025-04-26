@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apartment Management SaaS - Database Documentation</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="flex min-h-screen">
+    <aside class="w-64 bg-white shadow-md p-6 fixed h-full overflow-y-auto">
+      <h2 class="text-xl font-bold mb-6">Navigation</h2>
+      <nav class="flex flex-col gap-4">
+        <a href="#overview" class="text-gray-600 hover:text-gray-900">Overview</a>
+        <a href="#users" class="text-gray-600 hover:text-gray-900">Users Collection</a>
+        <a href="#apartments" class="text-gray-600 hover:text-gray-900">Apartments Collection</a>
+        <a href="#visitors" class="text-gray-600 hover:text-gray-900">Visitors Collection</a>
+        <a href="#maintenance" class="text-gray-600 hover:text-gray-900">Maintenance Collection</a>
+        <a href="#facilities" class="text-gray-600 hover:text-gray-900">Facilities Staff Collection</a>
+        <a href="#complaints" class="text-gray-600 hover:text-gray-900">Complaints Collection</a>
+        <a href="#accesscontrol" class="text-gray-600 hover:text-gray-900">Access Control Model</a>
+        <a href="#relationships" class="text-gray-600 hover:text-gray-900">Collection Relationships</a>
+      </nav>
+    </aside>
+    <main class="ml-64 p-10 flex-1">
+      <section id="overview" class="mb-16">
+        <h1 class="text-3xl font-bold mb-4">Apartment Management SaaS - MongoDB Schema</h1>
+        <p class="text-gray-700">This document provides an in-depth overview of the database structure for the multi-tenant Apartment Management SaaS application.</p>
+      </section>
+
+      <section id="users" class="mb-16">
+        <h2 class="text-2xl font-semibold mb-4">Users Collection</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  platformRole: "superadmin" | "platformadmin" | "apartmentadmin" | "staff" | "tenant",
+  tenantId: ObjectId | null,
+  roleInTenant: String | null,
+  name: String,
+  email: String,
+  phone: String,
+  passwordHash: String,
+  permissions: [String],
+  isActive: Boolean,
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="apartments" class="mb-16">
+        <h2 class="text-2xl font-semibold mb-4">Apartments Collection</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  name: String,
+  address: String,
+  numberOfUnits: Number,
+  apartments: [
+    {
+      unitNumber: String,
+      owner: { name, phone, email },
+      isTenanted: Boolean,
+      tenant: { name, phone, email, leaseStartDate, leaseEndDate, agreementFileUrl },
+      livingMembers: [ { name, phone, email, relation } ]
+    }
+  ],
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="visitors" class="mb-16">
+        <h2 class="text-2xl font-semibold mb-4">Visitors Collection</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  visitorName: String,
+  visitorPhone: String,
+  visitorEmail: String,
+  visitPurpose: String,
+  hostId: ObjectId,
+  apartmentUnit: String,
+  preRegistered: Boolean,
+  checkInTime: Date,
+  checkOutTime: Date,
+  badgeUrl: String,
+  isCheckedOut: Boolean,
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="maintenance" class="mb-16">
+        <h2 class="text-2xl font-semibold mb-4">Maintenance Collection</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  ticketId: String,
+  raisedBy: ObjectId,
+  apartmentUnit: String,
+  description: String,
+  category: String,
+  priority: String,
+  images: [String],
+  assignedTo: ObjectId,
+  status: String,
+  cost: Number,
+  scheduledDate: Date,
+  maintenanceDate: Date,
+  maintenanceHistory: [ { updateDate, updateDescription, status } ],
+  paymentStatus: String,
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="facilities" class="mb-16">
+        <h2 class="text-2xl font-semibold mb-4">Facilities Staff Collection</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  staffId: ObjectId,
+  schedule: [ { date, assignedTasks: [ { taskId, location, priority, status, feedbackGiven } ] } ],
+  attendance: [ { date, clockInTime, clockOutTime, totalHoursWorked } ],
+  performanceRating: [ { date, rating, feedback } ],
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="complaints" class="mb-16">
+        <h2 class="text-2xl font-semibold mb-4">Complaints Collection</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  complaintId: String,
+  raisedBy: ObjectId,
+  apartmentUnit: String,
+  description: String,
+  attachments: [String],
+  assignedTo: ObjectId,
+  department: String,
+  status: String,
+  escalated: Boolean,
+  escalationHistory: [ { escalatedOn, reason } ],
+  resolution: { resolvedOn, resolvedBy, resolutionDetails },
+  feedback: { rating, comment },
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="accesscontrol" class="mb-16">
+        <h2 class="text-2xl font-semibold mb-4">Access Control Model</h2>
+        <ul class="list-disc pl-6 text-gray-700">
+          <li>Platform Roles: Superadmin, Platform Admin</li>
+          <li>Tenant Roles: Apartment Admin, Staff (Receptionist, Guard, Technician), Tenant</li>
+          <li>Role-based Access enforced in all APIs and frontends.</li>
+          <li>tenantId NULL only for platform admins; all others must have valid tenantId.</li>
+        </ul>
+      </section>
+
+      <section id="relationships">
+        <h2 class="text-2xl font-semibold mb-4">Collection Relationships</h2>
+        <ul class="list-disc pl-6 text-gray-700">
+          <li>Users linked to Tenant via tenantId</li>
+          <li>Apartments belong to Tenant via tenantId</li>
+          <li>Visitors linked to Host User and Tenant</li>
+          <li>Maintenance linked to User, Technician and Tenant</li>
+          <li>Facilities Staff linked to Staff User and Tenant</li>
+          <li>Complaints linked to User and Tenant</li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+</body>
+</html>
