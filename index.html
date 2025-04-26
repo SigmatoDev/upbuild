@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UpBuild Documentation</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
 </head>
 <body class="bg-gray-100 text-gray-900">
   <header class="w-full bg-white shadow-md sticky top-0 z-50 flex items-center justify-between px-6 py-4">
@@ -17,7 +17,12 @@
       <h2 class="text-lg font-semibold mb-6">Navigation</h2>
       <nav class="flex flex-col gap-4">
         <a href="#overview" class="text-gray-600 hover:text-gray-900">Overview</a>
-        <a href="#schema" class="text-gray-600 hover:text-gray-900">Users Schema</a>
+        <a href="#users" class="text-gray-600 hover:text-gray-900">Users Collection</a>
+        <a href="#apartments" class="text-gray-600 hover:text-gray-900">Apartments Collection</a>
+        <a href="#visitors" class="text-gray-600 hover:text-gray-900">Visitors Collection</a>
+        <a href="#maintenance" class="text-gray-600 hover:text-gray-900">Maintenance Collection</a>
+        <a href="#facilities" class="text-gray-600 hover:text-gray-900">Facilities Staff Collection</a>
+        <a href="#complaints" class="text-gray-600 hover:text-gray-900">Complaints Collection</a>
         <a href="#userflow" class="text-gray-600 hover:text-gray-900">User Flow Story</a>
         <a href="#flowchart" class="text-gray-600 hover:text-gray-900">Flowchart</a>
       </nav>
@@ -29,7 +34,7 @@
         <p class="text-gray-700">UpBuild is a multi-tenant SaaS platform for efficient management of apartments, visitors, maintenance, staff, and complaints, ensuring smooth operation and communication between admins, staff, and tenants.</p>
       </section>
 
-      <section id="schema">
+      <section id="users">
         <h2 class="text-2xl font-semibold mb-4">Users Collection Schema</h2>
         <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
   _id: ObjectId,
@@ -47,73 +52,165 @@
 }</code></pre>
       </section>
 
+      <section id="apartments">
+        <h2 class="text-2xl font-semibold mb-4">Apartments Collection Schema</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  name: String,
+  address: String,
+  numberOfUnits: Number,
+  apartments: [
+    {
+      unitNumber: String,
+      owner: { name, phone, email },
+      isTenanted: Boolean,
+      tenant: { name, phone, email, leaseStartDate, leaseEndDate, agreementFileUrl },
+      livingMembers: [ { name, phone, email, relation } ]
+    }
+  ],
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="visitors">
+        <h2 class="text-2xl font-semibold mb-4">Visitors Collection Schema</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  visitorName: String,
+  visitorPhone: String,
+  visitorEmail: String,
+  visitPurpose: String,
+  hostId: ObjectId,
+  apartmentUnit: String,
+  preRegistered: Boolean,
+  checkInTime: Date,
+  checkOutTime: Date,
+  badgeUrl: String,
+  isCheckedOut: Boolean,
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="maintenance">
+        <h2 class="text-2xl font-semibold mb-4">Maintenance Collection Schema</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  ticketId: String,
+  raisedBy: ObjectId,
+  apartmentUnit: String,
+  description: String,
+  category: String,
+  priority: String,
+  images: [String],
+  assignedTo: ObjectId,
+  status: String,
+  cost: Number,
+  scheduledDate: Date,
+  maintenanceDate: Date,
+  maintenanceHistory: [ { updateDate, updateDescription, status } ],
+  paymentStatus: String,
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="facilities">
+        <h2 class="text-2xl font-semibold mb-4">Facilities Staff Collection Schema</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  staffId: ObjectId,
+  schedule: [ { date, assignedTasks: [ { taskId, location, priority, status, feedbackGiven } ] } ],
+  attendance: [ { date, clockInTime, clockOutTime, totalHoursWorked } ],
+  performanceRating: [ { date, rating, feedback } ],
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
+      <section id="complaints">
+        <h2 class="text-2xl font-semibold mb-4">Complaints Collection Schema</h2>
+        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
+  _id: ObjectId,
+  tenantId: ObjectId,
+  complaintId: String,
+  raisedBy: ObjectId,
+  apartmentUnit: String,
+  description: String,
+  attachments: [String],
+  assignedTo: ObjectId,
+  department: String,
+  status: String,
+  escalated: Boolean,
+  escalationHistory: [ { escalatedOn, reason } ],
+  resolution: { resolvedOn, resolvedBy, resolutionDetails },
+  feedback: { rating, comment },
+  createdAt: Date,
+  updatedAt: Date
+}</code></pre>
+      </section>
+
       <section id="userflow">
         <h2 class="text-2xl font-semibold mb-4">User Flow Story (Detailed)</h2>
         <div class="space-y-6 text-gray-700 bg-white p-6 rounded-lg shadow">
           <h3 class="text-xl font-bold">1. Super Admin Setup</h3>
           <ul class="list-disc pl-6">
-            <li>Logs in securely to the UpBuild platform.</li>
+            <li>Logs in securely to UpBuild platform.</li>
             <li>Creates new apartment complexes: Name, Address, Units, Contact Info.</li>
             <li>Defines global rules for maintenance, visitors, complaints.</li>
           </ul>
-
           <h3 class="text-xl font-bold">2. Assigning Apartment Admin</h3>
           <ul class="list-disc pl-6">
             <li>Assigns an Apartment Admin (Manager) per complex.</li>
             <li>Sends an invite email with login credentials.</li>
           </ul>
-
           <h3 class="text-xl font-bold">3. Apartment Admin Management</h3>
           <ul class="list-disc pl-6">
             <li>Adds Receptionists, Guards, Technicians as staff.</li>
             <li>Defines units and tenants inside the complex.</li>
             <li>Sets visitor entry rules, complaint escalation timelines, and staff shift rules.</li>
           </ul>
-
           <h3 class="text-xl font-bold">4. Staff Operations</h3>
           <ul class="list-disc pl-6">
             <li>Receptionists manage visitor check-in/out and badge issuance.</li>
             <li>Guards monitor entry gates and security.</li>
             <li>Technicians resolve maintenance complaints and update statuses.</li>
           </ul>
-
           <h3 class="text-xl font-bold">5. Tenant Interactions</h3>
           <ul class="list-disc pl-6">
-            <li>Log in through web/mobile apps.</li>
-            <li>Pre-register visitors, raise complaints, view maintenance status.</li>
-            <li>Submit housekeeping feedback.</li>
+            <li>Tenants pre-register visitors, raise complaints, view maintenance status, and submit housekeeping feedback.</li>
           </ul>
-
           <h3 class="text-xl font-bold">6. Visitor Management</h3>
           <ul class="list-disc pl-6">
-            <li>Visitors pre-register or register manually at gates.</li>
+            <li>Visitors pre-register online or register manually at security gate.</li>
             <li>QR code badges generated.</li>
-            <li>Real-time notifications to tenants.</li>
+            <li>Real-time notifications sent to hosts.</li>
           </ul>
-
           <h3 class="text-xl font-bold">7. Complaint Handling Flow</h3>
           <ul class="list-disc pl-6">
-            <li>Tenant → Complaint Raised → Admin Assigns → Technician Resolves → Tenant Feedback → Closed.</li>
-            <li>Escalation to higher authority if unresolved within SLA.</li>
+            <li>Tenant raises complaint → Admin assigns staff → Staff resolves → Tenant feedback collected.</li>
+            <li>Automatic escalation if overdue.</li>
           </ul>
-
           <h3 class="text-xl font-bold">8. Maintenance Flow</h3>
           <ul class="list-disc pl-6">
-            <li>Tenants submit tickets (with optional images/videos).</li>
-            <li>Admins prioritize tickets and assign to technicians.</li>
-            <li>Progress updates stored for history tracking and audits.</li>
+            <li>Tenants submit maintenance tickets (with optional images).</li>
+            <li>Admins prioritize based on urgency.</li>
+            <li>Technicians update real-time task status.</li>
           </ul>
-
-          <h3 class="text-xl font-bold">9. Performance Reports</h3>
+          <h3 class="text-xl font-bold">9. Performance and Reports</h3>
           <ul class="list-disc pl-6">
-            <li>Visitor logs, complaint closure rates, staff attendance, and maintenance costs tracked.</li>
-            <li>Monthly exportable reports available for admins.</li>
+            <li>Admins and Super Admins view reports on visitors, complaints, maintenance, and staff performance.</li>
+            <li>Reports are exportable monthly.</li>
           </ul>
-
           <h3 class="text-xl font-bold">10. Platform Expansion</h3>
           <ul class="list-disc pl-6">
-            <li>Super Admin can add more complexes anytime.</li>
-            <li>Future option: Complex-specific Free/Paid plans for scaling.</li>
+            <li>Super Admins can onboard new complexes anytime.</li>
+            <li>Future plans allow per-complex Free/Paid subscriptions.</li>
           </ul>
         </div>
       </section>
