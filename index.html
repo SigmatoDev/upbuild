@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UpBuild Documentation</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>" />
 </head>
 <body class="bg-gray-100 text-gray-900">
   <header class="w-full bg-white shadow-md sticky top-0 z-50 flex items-center justify-between px-6 py-4">
@@ -17,20 +17,20 @@
       <h2 class="text-lg font-semibold mb-6">Navigation</h2>
       <nav class="flex flex-col gap-4">
         <a href="#overview" class="text-gray-600 hover:text-gray-900">Overview</a>
-        <a href="#users" class="text-gray-600 hover:text-gray-900">Users Collection</a>
+        <a href="#schema" class="text-gray-600 hover:text-gray-900">Users Schema</a>
         <a href="#userflow" class="text-gray-600 hover:text-gray-900">User Flow Story</a>
-        <a href="#flowchart" class="text-gray-600 hover:text-gray-900">User Flow Diagram</a>
+        <a href="#flowchart" class="text-gray-600 hover:text-gray-900">Flowchart</a>
       </nav>
     </aside>
 
     <main class="ml-64 p-10 flex-1 space-y-16">
       <section id="overview">
         <h2 class="text-3xl font-bold mb-4">Apartment Management SaaS - Overview</h2>
-        <p class="text-gray-700">A comprehensive documentation for managing multi-tenant apartments using UpBuild SaaS platform.</p>
+        <p class="text-gray-700">UpBuild is a multi-tenant SaaS platform for efficient management of apartments, visitors, maintenance, staff, and complaints, ensuring smooth operation and communication between admins, staff, and tenants.</p>
       </section>
 
-      <section id="users">
-        <h3 class="text-2xl font-semibold mb-4">Users Collection Schema</h3>
+      <section id="schema">
+        <h2 class="text-2xl font-semibold mb-4">Users Collection Schema</h2>
         <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
   _id: ObjectId,
   globalRole: "owner" | "platformAdmin" | "tenantUser",
@@ -48,74 +48,86 @@
       </section>
 
       <section id="userflow">
-        <h3 class="text-2xl font-semibold mb-4">User Flow Story</h3>
+        <h2 class="text-2xl font-semibold mb-4">User Flow Story (Detailed)</h2>
         <div class="space-y-6 text-gray-700 bg-white p-6 rounded-lg shadow">
-          <h4 class="text-xl font-bold">1. Super Admin Setup</h4>
+          <h3 class="text-xl font-bold">1. Super Admin Setup</h3>
           <ul class="list-disc pl-6">
-            <li>Secure login to UpBuild platform</li>
-            <li>Create new apartment complexes</li>
-            <li>Define basic settings (visitor rules, maintenance)</li>
+            <li>Logs in securely to the UpBuild platform.</li>
+            <li>Creates new apartment complexes: Name, Address, Units, Contact Info.</li>
+            <li>Defines global rules for maintenance, visitors, complaints.</li>
           </ul>
-          <h4 class="text-xl font-bold">2. Assigning Apartment Admin</h4>
+
+          <h3 class="text-xl font-bold">2. Assigning Apartment Admin</h3>
           <ul class="list-disc pl-6">
-            <li>Assign apartment managers</li>
-            <li>Send invite emails for setup</li>
+            <li>Assigns an Apartment Admin (Manager) per complex.</li>
+            <li>Sends an invite email with login credentials.</li>
           </ul>
-          <h4 class="text-xl font-bold">3. Apartment Admin Management</h4>
+
+          <h3 class="text-xl font-bold">3. Apartment Admin Management</h3>
           <ul class="list-disc pl-6">
-            <li>Add staff (Receptionists, Guards, Technicians)</li>
-            <li>Configure apartments and tenant assignments</li>
+            <li>Adds Receptionists, Guards, Technicians as staff.</li>
+            <li>Defines units and tenants inside the complex.</li>
+            <li>Sets visitor entry rules, complaint escalation timelines, and staff shift rules.</li>
           </ul>
-          <h4 class="text-xl font-bold">4. Staff Operations</h4>
+
+          <h3 class="text-xl font-bold">4. Staff Operations</h3>
           <ul class="list-disc pl-6">
-            <li>Receptionists manage visitors</li>
-            <li>Guards monitor entries</li>
-            <li>Technicians manage maintenance tasks</li>
+            <li>Receptionists manage visitor check-in/out and badge issuance.</li>
+            <li>Guards monitor entry gates and security.</li>
+            <li>Technicians resolve maintenance complaints and update statuses.</li>
           </ul>
-          <h4 class="text-xl font-bold">5. Tenant Interactions</h4>
+
+          <h3 class="text-xl font-bold">5. Tenant Interactions</h3>
           <ul class="list-disc pl-6">
-            <li>Pre-register visitors, raise complaints, submit feedback</li>
+            <li>Log in through web/mobile apps.</li>
+            <li>Pre-register visitors, raise complaints, view maintenance status.</li>
+            <li>Submit housekeeping feedback.</li>
           </ul>
-          <h4 class="text-xl font-bold">6. Visitor Management</h4>
+
+          <h3 class="text-xl font-bold">6. Visitor Management</h3>
           <ul class="list-disc pl-6">
-            <li>Pre-register or manual register</li>
-            <li>QR code badges issued</li>
-            <li>Check-in/out times recorded</li>
+            <li>Visitors pre-register or register manually at gates.</li>
+            <li>QR code badges generated.</li>
+            <li>Real-time notifications to tenants.</li>
           </ul>
-          <h4 class="text-xl font-bold">7. Complaint Handling Flow</h4>
+
+          <h3 class="text-xl font-bold">7. Complaint Handling Flow</h3>
           <ul class="list-disc pl-6">
-            <li>Tenant raises complaint → Admin assigns → Technician resolves → Tenant feedback</li>
-            <li>Escalation if overdue</li>
+            <li>Tenant → Complaint Raised → Admin Assigns → Technician Resolves → Tenant Feedback → Closed.</li>
+            <li>Escalation to higher authority if unresolved within SLA.</li>
           </ul>
-          <h4 class="text-xl font-bold">8. Maintenance Flow</h4>
+
+          <h3 class="text-xl font-bold">8. Maintenance Flow</h3>
           <ul class="list-disc pl-6">
-            <li>Ticket submissions with images</li>
-            <li>Technician updates progress</li>
-            <li>Audit history maintained</li>
+            <li>Tenants submit tickets (with optional images/videos).</li>
+            <li>Admins prioritize tickets and assign to technicians.</li>
+            <li>Progress updates stored for history tracking and audits.</li>
           </ul>
-          <h4 class="text-xl font-bold">9. Performance and Reports</h4>
+
+          <h3 class="text-xl font-bold">9. Performance Reports</h3>
           <ul class="list-disc pl-6">
-            <li>Admins view visitor, complaint, staff, and maintenance reports</li>
-            <li>Monthly exports available</li>
+            <li>Visitor logs, complaint closure rates, staff attendance, and maintenance costs tracked.</li>
+            <li>Monthly exportable reports available for admins.</li>
           </ul>
-          <h4 class="text-xl font-bold">10. Platform Expansion</h4>
+
+          <h3 class="text-xl font-bold">10. Platform Expansion</h3>
           <ul class="list-disc pl-6">
-            <li>Super Admins onboard more complexes anytime</li>
-            <li>Plan subscriptions (Free/Paid) for scaling</li>
+            <li>Super Admin can add more complexes anytime.</li>
+            <li>Future option: Complex-specific Free/Paid plans for scaling.</li>
           </ul>
         </div>
       </section>
 
       <section id="flowchart">
-        <h3 class="text-2xl font-semibold mb-4">User Flow Diagram</h3>
+        <h2 class="text-2xl font-semibold mb-4">Flowchart</h2>
         <div class="flex flex-col items-center gap-8">
           <div class="bg-white shadow rounded p-4">Super Admin</div>
           <div class="flex gap-8">
             <div class="bg-white shadow rounded p-4">Apartment Admin</div>
           </div>
           <div class="flex gap-8">
-            <div class="bg-white shadow rounded p-4">Staff (Receptionist / Technician / Guard)</div>
-            <div class="bg-white shadow rounded p-4">Tenant (Residents)</div>
+            <div class="bg-white shadow rounded p-4">Receptionist / Guard / Technician</div>
+            <div class="bg-white shadow rounded p-4">Tenant (Resident)</div>
           </div>
         </div>
       </section>
