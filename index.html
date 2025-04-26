@@ -24,150 +24,45 @@
         <a href="#facilities" class="text-gray-600 hover:text-gray-900">Facilities Staff Collection</a>
         <a href="#complaints" class="text-gray-600 hover:text-gray-900">Complaints Collection</a>
         <a href="#userflow" class="text-gray-600 hover:text-gray-900">User Flow Story</a>
+        <a href="#architecture" class="text-gray-600 hover:text-gray-900">Architecture</a>
+        <a href="#routing" class="text-gray-600 hover:text-gray-900">API & Routing Structure</a>
       </nav>
     </aside>
 
     <main class="ml-64 p-10 flex-1 space-y-16">
-      <section id="overview">
-        <h2 class="text-3xl font-bold mb-4">Overview</h2>
-        <p class="text-gray-700">UpBuild is a SaaS platform for managing apartment operations, including visitors, maintenance, staff, and complaints, ensuring smooth operations between Admins, Staff, and Tenants.</p>
-      </section>
+      <!-- Other sections already present -->
 
-      <section id="users">
-        <h2 class="text-2xl font-semibold mb-4">Users Collection</h2>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  globalRole: "owner" | "platformAdmin" | "tenantUser",
-  tenantId: ObjectId | null,
-  tenantRole: "admin" | "staff" | "receptionist" | "guard" | "technician" | "resident" | null,
-  name: String,
-  email: String,
-  phone: String,
-  passwordHash: String,
-  permissions: [String],
-  isActive: Boolean,
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="apartments">
-        <h2 class="text-2xl font-semibold mb-4">Apartments Collection</h2>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  name: String,
-  address: String,
-  numberOfUnits: Number,
-  apartments: [
-    {
-      unitNumber: String,
-      owner: { name, phone, email },
-      isTenanted: Boolean,
-      tenant: { name, phone, email, leaseStartDate, leaseEndDate, agreementFileUrl },
-      livingMembers: [ { name, phone, email, relation } ]
-    }
-  ],
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="visitors">
-        <h2 class="text-2xl font-semibold mb-4">Visitors Collection</h2>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  visitorName: String,
-  visitorPhone: String,
-  visitorEmail: String,
-  visitPurpose: String,
-  hostId: ObjectId,
-  apartmentUnit: String,
-  preRegistered: Boolean,
-  checkInTime: Date,
-  checkOutTime: Date,
-  badgeUrl: String,
-  isCheckedOut: Boolean,
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="maintenance">
-        <h2 class="text-2xl font-semibold mb-4">Maintenance Collection</h2>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  ticketId: String,
-  raisedBy: ObjectId,
-  apartmentUnit: String,
-  description: String,
-  category: String,
-  priority: String,
-  images: [String],
-  assignedTo: ObjectId,
-  status: String,
-  cost: Number,
-  scheduledDate: Date,
-  maintenanceDate: Date,
-  maintenanceHistory: [ { updateDate, updateDescription, status } ],
-  paymentStatus: String,
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="facilities">
-        <h2 class="text-2xl font-semibold mb-4">Facilities Staff Collection</h2>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  staffId: ObjectId,
-  schedule: [ { date, assignedTasks: [ { taskId, location, priority, status, feedbackGiven } ] } ],
-  attendance: [ { date, clockInTime, clockOutTime, totalHoursWorked } ],
-  performanceRating: [ { date, rating, feedback } ],
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="complaints">
-        <h2 class="text-2xl font-semibold mb-4">Complaints Collection</h2>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  complaintId: String,
-  raisedBy: ObjectId,
-  apartmentUnit: String,
-  description: String,
-  attachments: [String],
-  assignedTo: ObjectId,
-  department: String,
-  status: String,
-  escalated: Boolean,
-  escalationHistory: [ { escalatedOn, reason } ],
-  resolution: { resolvedOn, resolvedBy, resolutionDetails },
-  feedback: { rating, comment },
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="userflow">
-        <h2 class="text-2xl font-semibold mb-4">User Flow Story</h2>
+      <section id="architecture">
+        <h2 class="text-2xl font-semibold mb-4">Architecture</h2>
         <p class="text-gray-700 bg-white p-6 rounded-lg shadow">
-          - Super Admin securely logs in, creates apartments, defines settings.<br>
-          - Assigns Apartment Admins who configure units, assign tenants.<br>
-          - Admins add Receptionists, Guards, Technicians.<br>
-          - Staff manage visitors, complaints, maintenance.<br>
-          - Tenants interact via app to register visitors, raise complaints.<br>
-          - Visitors pre-register/check-in, get QR badges.<br>
-          - Complaints escalate if not resolved.<br>
-          - Maintenance tickets submitted, technicians assigned.<br>
-          - All activities logged; reports are generated.<br>
-          - Super Admin expands platform with new complexes.
+          All users (SaaS owner, platform admins, tenant admins, staff, tenants) are stored in a single <code>users</code> collection.<br>
+          Each user is differentiated by two fields:<br>
+          <strong>globalRole</strong>: 'owner', 'platformAdmin', or 'tenantUser'<br>
+          <strong>tenantRole</strong>: 'admin', 'staff', 'receptionist', 'guard', 'technician', 'resident' (only for tenantUsers)<br>
+          Platform Admins (SaaS team) have <code>globalRole: platformAdmin</code> with no tenant linkage.<br>
+          Tenant Admins, Staff, and Residents have <code>globalRole: tenantUser</code> and a linked <code>tenantId</code>.<br>
+          This architecture simplifies user management, authentication, authorization, and scaling.
         </p>
+      </section>
+
+      <section id="routing">
+        <h2 class="text-2xl font-semibold mb-4">Recommended API and Routing Structure</h2>
+        <div class="space-y-6 text-gray-700 bg-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-bold">Routes by Role:</h3>
+          <ul class="list-disc pl-6">
+            <li><strong>/platform-admin/*</strong>: Accessed by users with <code>globalRole: owner</code> or <code>platformAdmin</code>. Manages tenants, platform settings.</li>
+            <li><strong>/tenant-admin/*</strong>: Accessed by users with <code>globalRole: tenantUser</code> and <code>tenantRole: admin</code>. Manages their own apartment complex operations.</li>
+            <li><strong>/staff/*</strong>: Accessed by users with <code>globalRole: tenantUser</code> and <code>tenantRole: receptionist/guard/technician</code>. Handles daily staff tasks.</li>
+            <li><strong>/tenant/*</strong>: Accessed by users with <code>globalRole: tenantUser</code> and <code>tenantRole: resident</code>. Used by normal residents to interact with the system.</li>
+          </ul>
+
+          <h3 class="text-xl font-bold">Access Control:</h3>
+          <ul class="list-disc pl-6">
+            <li>Middleware checks <code>globalRole</code> and <code>tenantRole</code> after authentication token decoding.</li>
+            <li>APIs are protected based on allowed roles and tenantId verification.</li>
+            <li>Platform-level APIs are separated from tenant-level APIs securely.</li>
+          </ul>
+        </div>
       </section>
 
     </main>
