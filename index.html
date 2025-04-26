@@ -10,7 +10,6 @@
 <body class="bg-gray-100 text-gray-900">
   <header class="w-full bg-white shadow-md sticky top-0 z-50 flex items-center justify-between px-6 py-4">
     <h1 class="text-xl font-bold">UpBuild Documentation</h1>
-    <a href="https://github.com/your-username/upbuild" target="_blank" class="text-blue-600 hover:underline">Edit on GitHub</a>
   </header>
 
   <div class="flex min-h-screen">
@@ -26,6 +25,8 @@
         <a href="#complaints" class="text-gray-600 hover:text-gray-900">Complaints Collection</a>
         <a href="#accesscontrol" class="text-gray-600 hover:text-gray-900">Access Control Model</a>
         <a href="#relationships" class="text-gray-600 hover:text-gray-900">Collection Relationships</a>
+        <a href="#userflow" class="text-gray-600 hover:text-gray-900">User Flow Story</a>
+        <a href="#flowchart" class="text-gray-600 hover:text-gray-900">User Flow Diagram</a>
       </nav>
     </aside>
 
@@ -176,6 +177,27 @@
           <li>Facilities Staff linked to Staff User and Tenant</li>
           <li>Complaints linked to User and Tenant</li>
         </ul>
+      </section>
+
+      <section id="userflow" class="mb-16">
+        <h3 class="text-2xl font-semibold mb-4">User Flow Story</h3>
+        <p class="text-gray-700 leading-relaxed">
+          Super Admin manages the entire platform, adding new apartment complexes. Each complex has an Apartment Admin who manages daily operations by adding staff like receptionists, guards, and technicians. Staff members handle tasks like visitor management, maintenance, and housekeeping. Tenants use the app to register visitors, raise complaints, and track maintenance. The platform ensures secure, efficient, and isolated management of multiple apartment complexes.
+        </p>
+      </section>
+
+      <section id="flowchart" class="mb-16">
+        <h3 class="text-2xl font-semibold mb-4">User Flow Diagram</h3>
+        <div class="flex flex-col items-center gap-8">
+          <div class="bg-white shadow rounded p-4">Super Admin</div>
+          <div class="flex gap-8">
+            <div class="bg-white shadow rounded p-4">Apartment Admin</div>
+          </div>
+          <div class="flex gap-8">
+            <div class="bg-white shadow rounded p-4">Staff (Receptionist / Technician / Guard)</div>
+            <div class="bg-white shadow rounded p-4">Tenant (Residents)</div>
+          </div>
+        </div>
       </section>
 
     </main>
