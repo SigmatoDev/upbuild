@@ -3,13 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apartment Management SaaS - Database Documentation</title>
+  <title>UpBuild Documentation</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
 </head>
 <body class="bg-gray-100 text-gray-900">
+  <header class="w-full bg-white shadow-md sticky top-0 z-50 flex items-center justify-between px-6 py-4">
+    <h1 class="text-xl font-bold">UpBuild Documentation</h1>
+    <a href="https://github.com/your-username/upbuild" target="_blank" class="text-blue-600 hover:underline">Edit on GitHub</a>
+  </header>
+
   <div class="flex min-h-screen">
     <aside class="w-64 bg-white shadow-md p-6 fixed h-full overflow-y-auto">
-      <h2 class="text-xl font-bold mb-6">Navigation</h2>
+      <h2 class="text-lg font-semibold mb-6">Navigation</h2>
       <nav class="flex flex-col gap-4">
         <a href="#overview" class="text-gray-600 hover:text-gray-900">Overview</a>
         <a href="#users" class="text-gray-600 hover:text-gray-900">Users Collection</a>
@@ -22,14 +28,15 @@
         <a href="#relationships" class="text-gray-600 hover:text-gray-900">Collection Relationships</a>
       </nav>
     </aside>
+
     <main class="ml-64 p-10 flex-1">
       <section id="overview" class="mb-16">
-        <h1 class="text-3xl font-bold mb-4">Apartment Management SaaS - MongoDB Schema</h1>
+        <h2 class="text-3xl font-bold mb-4">Apartment Management SaaS - MongoDB Schema</h2>
         <p class="text-gray-700">This document provides an in-depth overview of the database structure for the multi-tenant Apartment Management SaaS application.</p>
       </section>
 
       <section id="users" class="mb-16">
-        <h2 class="text-2xl font-semibold mb-4">Users Collection</h2>
+        <h3 class="text-2xl font-semibold mb-4">Users Collection</h3>
         <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
   _id: ObjectId,
   platformRole: "superadmin" | "platformadmin" | "apartmentadmin" | "staff" | "tenant",
@@ -47,7 +54,7 @@
       </section>
 
       <section id="apartments" class="mb-16">
-        <h2 class="text-2xl font-semibold mb-4">Apartments Collection</h2>
+        <h3 class="text-2xl font-semibold mb-4">Apartments Collection</h3>
         <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
   _id: ObjectId,
   tenantId: ObjectId,
@@ -69,7 +76,7 @@
       </section>
 
       <section id="visitors" class="mb-16">
-        <h2 class="text-2xl font-semibold mb-4">Visitors Collection</h2>
+        <h3 class="text-2xl font-semibold mb-4">Visitors Collection</h3>
         <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
   _id: ObjectId,
   tenantId: ObjectId,
@@ -90,7 +97,7 @@
       </section>
 
       <section id="maintenance" class="mb-16">
-        <h2 class="text-2xl font-semibold mb-4">Maintenance Collection</h2>
+        <h3 class="text-2xl font-semibold mb-4">Maintenance Collection</h3>
         <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
   _id: ObjectId,
   tenantId: ObjectId,
@@ -114,7 +121,7 @@
       </section>
 
       <section id="facilities" class="mb-16">
-        <h2 class="text-2xl font-semibold mb-4">Facilities Staff Collection</h2>
+        <h3 class="text-2xl font-semibold mb-4">Facilities Staff Collection</h3>
         <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
   _id: ObjectId,
   tenantId: ObjectId,
@@ -128,7 +135,7 @@
       </section>
 
       <section id="complaints" class="mb-16">
-        <h2 class="text-2xl font-semibold mb-4">Complaints Collection</h2>
+        <h3 class="text-2xl font-semibold mb-4">Complaints Collection</h3>
         <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
   _id: ObjectId,
   tenantId: ObjectId,
@@ -150,7 +157,7 @@
       </section>
 
       <section id="accesscontrol" class="mb-16">
-        <h2 class="text-2xl font-semibold mb-4">Access Control Model</h2>
+        <h3 class="text-2xl font-semibold mb-4">Access Control Model</h3>
         <ul class="list-disc pl-6 text-gray-700">
           <li>Platform Roles: Superadmin, Platform Admin</li>
           <li>Tenant Roles: Apartment Admin, Staff (Receptionist, Guard, Technician), Tenant</li>
@@ -159,8 +166,8 @@
         </ul>
       </section>
 
-      <section id="relationships">
-        <h2 class="text-2xl font-semibold mb-4">Collection Relationships</h2>
+      <section id="relationships" class="mb-16">
+        <h3 class="text-2xl font-semibold mb-4">Collection Relationships</h3>
         <ul class="list-disc pl-6 text-gray-700">
           <li>Users linked to Tenant via tenantId</li>
           <li>Apartments belong to Tenant via tenantId</li>
