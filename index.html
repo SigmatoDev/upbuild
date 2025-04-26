@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UpBuild Documentation</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
 </head>
 <body class="bg-gray-100 text-gray-900">
   <header class="w-full bg-white shadow-md sticky top-0 z-50 flex items-center justify-between px-6 py-4">
@@ -18,31 +18,24 @@
       <nav class="flex flex-col gap-4">
         <a href="#overview" class="text-gray-600 hover:text-gray-900">Overview</a>
         <a href="#users" class="text-gray-600 hover:text-gray-900">Users Collection</a>
-        <a href="#apartments" class="text-gray-600 hover:text-gray-900">Apartments Collection</a>
-        <a href="#visitors" class="text-gray-600 hover:text-gray-900">Visitors Collection</a>
-        <a href="#maintenance" class="text-gray-600 hover:text-gray-900">Maintenance Collection</a>
-        <a href="#facilities" class="text-gray-600 hover:text-gray-900">Facilities Staff Collection</a>
-        <a href="#complaints" class="text-gray-600 hover:text-gray-900">Complaints Collection</a>
-        <a href="#accesscontrol" class="text-gray-600 hover:text-gray-900">Access Control Model</a>
-        <a href="#relationships" class="text-gray-600 hover:text-gray-900">Collection Relationships</a>
         <a href="#userflow" class="text-gray-600 hover:text-gray-900">User Flow Story</a>
         <a href="#flowchart" class="text-gray-600 hover:text-gray-900">User Flow Diagram</a>
       </nav>
     </aside>
 
-    <main class="ml-64 p-10 flex-1">
-      <section id="overview" class="mb-16">
-        <h2 class="text-3xl font-bold mb-4">Apartment Management SaaS - MongoDB Schema</h2>
-        <p class="text-gray-700">This document provides an in-depth overview of the database structure for the multi-tenant Apartment Management SaaS application.</p>
+    <main class="ml-64 p-10 flex-1 space-y-16">
+      <section id="overview">
+        <h2 class="text-3xl font-bold mb-4">Apartment Management SaaS - Overview</h2>
+        <p class="text-gray-700">A comprehensive documentation for managing multi-tenant apartments using UpBuild SaaS platform.</p>
       </section>
 
-      <section id="users" class="mb-16">
-        <h3 class="text-2xl font-semibold mb-4">Users Collection</h3>
+      <section id="users">
+        <h3 class="text-2xl font-semibold mb-4">Users Collection Schema</h3>
         <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
   _id: ObjectId,
-  platformRole: "superadmin" | "platformadmin" | "apartmentadmin" | "staff" | "tenant",
+  globalRole: "owner" | "platformAdmin" | "tenantUser",
   tenantId: ObjectId | null,
-  roleInTenant: String | null,
+  tenantRole: "admin" | "staff" | "receptionist" | "guard" | "technician" | "resident" | null,
   name: String,
   email: String,
   phone: String,
@@ -54,139 +47,66 @@
 }</code></pre>
       </section>
 
-      <section id="apartments" class="mb-16">
-        <h3 class="text-2xl font-semibold mb-4">Apartments Collection</h3>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  name: String,
-  address: String,
-  numberOfUnits: Number,
-  apartments: [
-    {
-      unitNumber: String,
-      owner: { name, phone, email },
-      isTenanted: Boolean,
-      tenant: { name, phone, email, leaseStartDate, leaseEndDate, agreementFileUrl },
-      livingMembers: [ { name, phone, email, relation } ]
-    }
-  ],
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="visitors" class="mb-16">
-        <h3 class="text-2xl font-semibold mb-4">Visitors Collection</h3>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  visitorName: String,
-  visitorPhone: String,
-  visitorEmail: String,
-  visitPurpose: String,
-  hostId: ObjectId,
-  apartmentUnit: String,
-  preRegistered: Boolean,
-  checkInTime: Date,
-  checkOutTime: Date,
-  badgeUrl: String,
-  isCheckedOut: Boolean,
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="maintenance" class="mb-16">
-        <h3 class="text-2xl font-semibold mb-4">Maintenance Collection</h3>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  ticketId: String,
-  raisedBy: ObjectId,
-  apartmentUnit: String,
-  description: String,
-  category: String,
-  priority: String,
-  images: [String],
-  assignedTo: ObjectId,
-  status: String,
-  cost: Number,
-  scheduledDate: Date,
-  maintenanceDate: Date,
-  maintenanceHistory: [ { updateDate, updateDescription, status } ],
-  paymentStatus: String,
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="facilities" class="mb-16">
-        <h3 class="text-2xl font-semibold mb-4">Facilities Staff Collection</h3>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  staffId: ObjectId,
-  schedule: [ { date, assignedTasks: [ { taskId, location, priority, status, feedbackGiven } ] } ],
-  attendance: [ { date, clockInTime, clockOutTime, totalHoursWorked } ],
-  performanceRating: [ { date, rating, feedback } ],
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="complaints" class="mb-16">
-        <h3 class="text-2xl font-semibold mb-4">Complaints Collection</h3>
-        <pre class="bg-white p-6 rounded-lg shadow overflow-x-auto"><code>{
-  _id: ObjectId,
-  tenantId: ObjectId,
-  complaintId: String,
-  raisedBy: ObjectId,
-  apartmentUnit: String,
-  description: String,
-  attachments: [String],
-  assignedTo: ObjectId,
-  department: String,
-  status: String,
-  escalated: Boolean,
-  escalationHistory: [ { escalatedOn, reason } ],
-  resolution: { resolvedOn, resolvedBy, resolutionDetails },
-  feedback: { rating, comment },
-  createdAt: Date,
-  updatedAt: Date
-}</code></pre>
-      </section>
-
-      <section id="accesscontrol" class="mb-16">
-        <h3 class="text-2xl font-semibold mb-4">Access Control Model</h3>
-        <ul class="list-disc pl-6 text-gray-700">
-          <li>Platform Roles: Superadmin, Platform Admin</li>
-          <li>Tenant Roles: Apartment Admin, Staff (Receptionist, Guard, Technician), Tenant</li>
-          <li>Role-based Access enforced in all APIs and frontends.</li>
-          <li>tenantId NULL only for platform admins; all others must have valid tenantId.</li>
-        </ul>
-      </section>
-
-      <section id="relationships" class="mb-16">
-        <h3 class="text-2xl font-semibold mb-4">Collection Relationships</h3>
-        <ul class="list-disc pl-6 text-gray-700">
-          <li>Users linked to Tenant via tenantId</li>
-          <li>Apartments belong to Tenant via tenantId</li>
-          <li>Visitors linked to Host User and Tenant</li>
-          <li>Maintenance linked to User, Technician and Tenant</li>
-          <li>Facilities Staff linked to Staff User and Tenant</li>
-          <li>Complaints linked to User and Tenant</li>
-        </ul>
-      </section>
-
-      <section id="userflow" class="mb-16">
+      <section id="userflow">
         <h3 class="text-2xl font-semibold mb-4">User Flow Story</h3>
-        <p class="text-gray-700 leading-relaxed">
-          Super Admin manages the entire platform, adding new apartment complexes. Each complex has an Apartment Admin who manages daily operations by adding staff like receptionists, guards, and technicians. Staff members handle tasks like visitor management, maintenance, and housekeeping. Tenants use the app to register visitors, raise complaints, and track maintenance. The platform ensures secure, efficient, and isolated management of multiple apartment complexes.
-        </p>
+        <div class="space-y-6 text-gray-700 bg-white p-6 rounded-lg shadow">
+          <h4 class="text-xl font-bold">1. Super Admin Setup</h4>
+          <ul class="list-disc pl-6">
+            <li>Secure login to UpBuild platform</li>
+            <li>Create new apartment complexes</li>
+            <li>Define basic settings (visitor rules, maintenance)</li>
+          </ul>
+          <h4 class="text-xl font-bold">2. Assigning Apartment Admin</h4>
+          <ul class="list-disc pl-6">
+            <li>Assign apartment managers</li>
+            <li>Send invite emails for setup</li>
+          </ul>
+          <h4 class="text-xl font-bold">3. Apartment Admin Management</h4>
+          <ul class="list-disc pl-6">
+            <li>Add staff (Receptionists, Guards, Technicians)</li>
+            <li>Configure apartments and tenant assignments</li>
+          </ul>
+          <h4 class="text-xl font-bold">4. Staff Operations</h4>
+          <ul class="list-disc pl-6">
+            <li>Receptionists manage visitors</li>
+            <li>Guards monitor entries</li>
+            <li>Technicians manage maintenance tasks</li>
+          </ul>
+          <h4 class="text-xl font-bold">5. Tenant Interactions</h4>
+          <ul class="list-disc pl-6">
+            <li>Pre-register visitors, raise complaints, submit feedback</li>
+          </ul>
+          <h4 class="text-xl font-bold">6. Visitor Management</h4>
+          <ul class="list-disc pl-6">
+            <li>Pre-register or manual register</li>
+            <li>QR code badges issued</li>
+            <li>Check-in/out times recorded</li>
+          </ul>
+          <h4 class="text-xl font-bold">7. Complaint Handling Flow</h4>
+          <ul class="list-disc pl-6">
+            <li>Tenant raises complaint → Admin assigns → Technician resolves → Tenant feedback</li>
+            <li>Escalation if overdue</li>
+          </ul>
+          <h4 class="text-xl font-bold">8. Maintenance Flow</h4>
+          <ul class="list-disc pl-6">
+            <li>Ticket submissions with images</li>
+            <li>Technician updates progress</li>
+            <li>Audit history maintained</li>
+          </ul>
+          <h4 class="text-xl font-bold">9. Performance and Reports</h4>
+          <ul class="list-disc pl-6">
+            <li>Admins view visitor, complaint, staff, and maintenance reports</li>
+            <li>Monthly exports available</li>
+          </ul>
+          <h4 class="text-xl font-bold">10. Platform Expansion</h4>
+          <ul class="list-disc pl-6">
+            <li>Super Admins onboard more complexes anytime</li>
+            <li>Plan subscriptions (Free/Paid) for scaling</li>
+          </ul>
+        </div>
       </section>
 
-      <section id="flowchart" class="mb-16">
+      <section id="flowchart">
         <h3 class="text-2xl font-semibold mb-4">User Flow Diagram</h3>
         <div class="flex flex-col items-center gap-8">
           <div class="bg-white shadow rounded p-4">Super Admin</div>
